@@ -6,6 +6,12 @@
 //
 
 import SwiftUI
+import os
+
+let logger = Logger(
+  subsystem: "com.moofus.tictactoe",
+  category: "Root View"
+)
 
 struct ContentView: View {
   var body: some View {
