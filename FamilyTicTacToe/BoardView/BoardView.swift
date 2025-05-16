@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  BoardView.swift
 //  FamilyTicTacToe
 //
 //  Created by Lamar Williams III on 4/28/25.
@@ -13,38 +13,41 @@ let logger = Logger(
   category: "Root View"
 )
 
-struct ContentView: View {
+struct BoardView: View {
+  var model = BoardViewModel()
+  
   var body: some View {
     GeometryReader { geometry in
       let width = heightOrWidth(geometry: geometry)
+      let height = width
       VStack {
         Spacer()
         HStack {
           Spacer()
           Grid(horizontalSpacing: 12, verticalSpacing: 12) {
             GridRow {
-              MarkView(symbolColor: .red, symbolName: "xmark")
-              MarkView(symbolColor: .red, symbolName: "circlebadge")
-              MarkView(symbolColor: .red, symbolName: "xmark")
+              ForEach((0...2), id: \.self) { col in
+                MarkView(symbolColor: model.data[0][col].color, symbolName: model.data[0][col].symbolName)
+              }
             }
             .background(Color.white)
-            .frame(width: width, height: width)
-            
+            .frame(width: width, height: height)
+
             GridRow {
-              MarkView(symbolColor: .red, symbolName: "circlebadge")
-              MarkView(symbolColor: .red, symbolName: "xmark")
-              MarkView(symbolColor: .red, symbolName: "circlebadge")
+              ForEach((0...2), id: \.self) { col in
+                MarkView(symbolColor: model.data[1][col].color, symbolName: model.data[1][col].symbolName)
+              }
             }
             .background(Color.white)
-            .frame(width: width, height: width)
-            
+            .frame(width: width, height: height)
+
             GridRow {
-              MarkView(symbolColor: .red, symbolName: "xmark")
-              MarkView(symbolColor: .red, symbolName: "circlebadge")
-              MarkView(symbolColor: .red, symbolName: "xmark")
+              ForEach((0...2), id: \.self) { col in
+                MarkView(symbolColor: model.data[2][col].color, symbolName: model.data[2][col].symbolName)
+              }
             }
             .background(Color.white)
-            .frame(width: width, height: width)
+            .frame(width: width, height: height)
           }
           .background(Color.black)
           Spacer()
@@ -63,12 +66,5 @@ struct ContentView: View {
 }
 
 #Preview {
-  ContentView()
-}
-
-struct CellView:  View {
-  var body: some View {
-    Rectangle()
-      .clipShape(Capsule())
-  }
+  BoardView()
 }
