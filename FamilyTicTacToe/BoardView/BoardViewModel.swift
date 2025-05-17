@@ -13,19 +13,33 @@ import SwiftUI
 class BoardViewModel {
   typealias BoardData = BoardSource.BoardData
 
-  private let source = BoardSource()
+  @ObservationIgnored
+  private let source: BoardSource
   var data: [[BoardData]]
 
   init() {
-    data = testData
+    data = BoardSource.initialData
+    source = BoardSource()
 
     Task {
       await processState()
     }
   }
 
+  func initialize() async {
+    await source.initialize()
+  }
+
+  func onTapGester(row: Int, col: Int) {
+    Task.detached { [weak self] in
+      guard let self else { return }
+      await source.onTapGester(row: row, col: col)
+    }
+  }
+  
   private func processState() async {
     for await state in source.stream {
+      print("state=\(state)")
       switch state {
       case .idle(let data):
         self.data = data

@@ -27,30 +27,66 @@ actor BoardSource {
   private var boardData: [[BoardData]]
 
   init() {
-    boardData = testData
     (stream, continuation) = AsyncStream.makeStream(of: State.self)
+    boardData = Self.initialData
     state = .idle(boardData)
+    print("\(#function)")
   }
 
-  func initialize() {
+  func initialize() async {
+    try? await Task.sleep(nanoseconds: 5000000000)
+    //    continuation.yield(state)
+  }
+
+  func onTapGester(row: Int, col: Int) {
+    print("row=\(row) col=\(col)")
+    let symbolName = Int.random(in: 0...1) == 0 ? "xmark" : "circlebadge"
+    let colorIndex = Int.random(in: 0...2)
+    let colors: [Color] = [ .red, .green, .blue]
+    let color = colors[colorIndex]
+    boardData[row][col] = BoardData(symbolName: symbolName, color: color)
+    state = .idle(boardData)
     continuation.yield(state)
   }
 }
 
-let testData = [
+extension BoardSource {
+  static var initialData: [[BoardData]] {
+    return [
+      [
+        BoardSource.BoardData(symbolName: "xmark", color: .blue),
+        BoardSource.BoardData(symbolName: "xmark", color: .blue),
+        BoardSource.BoardData(symbolName: "xmark", color: .blue)
+      ],
+      [
+        BoardSource.BoardData(symbolName: "circlebadge", color: .blue),
+        BoardSource.BoardData(symbolName: "circlebadge", color: .blue),
+        BoardSource.BoardData(symbolName: "circlebadge", color: .blue)
+      ],
+      [
+        BoardSource.BoardData(symbolName: "xmark", color: .blue),
+        BoardSource.BoardData(symbolName: "xmark", color: .blue),
+        BoardSource.BoardData(symbolName: "xmark", color: .blue)
+      ]
+    ]
+  }
+}
+
+let testData2 = [
   [
-    BoardSource.BoardData(symbolName: "xmark", color: .blue),
-    BoardSource.BoardData(symbolName: "xmark", color: .blue),
-    BoardSource.BoardData(symbolName: "xmark", color: .blue)
+    BoardSource.BoardData(symbolName: "xmark", color: .green),
+    BoardSource.BoardData(symbolName: "xmark", color: .green),
+    BoardSource.BoardData(symbolName: "xmark", color: .green)
   ],
   [
-    BoardSource.BoardData(symbolName: "circlebadge", color: .red),
     BoardSource.BoardData(symbolName: "circlebadge", color: .green),
-    BoardSource.BoardData(symbolName: "circlebadge", color: .blue)
+    BoardSource.BoardData(symbolName: "circlebadge", color: .green),
+    BoardSource.BoardData(symbolName: "circlebadge", color: .green)
   ],
   [
-    BoardSource.BoardData(symbolName: "xmark", color: .blue),
-    BoardSource.BoardData(symbolName: "xmark", color: .blue),
-    BoardSource.BoardData(symbolName: "xmark", color: .blue)
+    BoardSource.BoardData(symbolName: "xmark", color: .green),
+    BoardSource.BoardData(symbolName: "xmark", color: .green),
+    BoardSource.BoardData(symbolName: "xmark", color: .green)
+
   ],
 ]

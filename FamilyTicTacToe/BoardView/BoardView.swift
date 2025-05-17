@@ -27,7 +27,11 @@ struct BoardView: View {
           Grid(horizontalSpacing: 12, verticalSpacing: 12) {
             GridRow {
               ForEach((0...2), id: \.self) { col in
+                let _ = print("Update row=0 col=\(col)")
                 MarkView(symbolColor: model.data[0][col].color, symbolName: model.data[0][col].symbolName)
+                  .onTapGesture {
+                    model.onTapGester(row: 0, col: col)
+                  }
               }
             }
             .background(Color.white)
@@ -35,7 +39,11 @@ struct BoardView: View {
 
             GridRow {
               ForEach((0...2), id: \.self) { col in
+                let _ = print("Update row=1 col=\(col)")
                 MarkView(symbolColor: model.data[1][col].color, symbolName: model.data[1][col].symbolName)
+                  .onTapGesture {
+                    model.onTapGester(row: 1, col: col)
+                  }
               }
             }
             .background(Color.white)
@@ -43,7 +51,11 @@ struct BoardView: View {
 
             GridRow {
               ForEach((0...2), id: \.self) { col in
+                let _ = print("Update row=2 col=\(col)")
                 MarkView(symbolColor: model.data[2][col].color, symbolName: model.data[2][col].symbolName)
+                  .onTapGesture {
+                    model.onTapGester(row: 2, col: col)
+                  }
               }
             }
             .background(Color.white)
@@ -53,6 +65,9 @@ struct BoardView: View {
           Spacer()
         }
         Spacer()
+      }
+      .task {
+        await model.initialize()
       }
     }
   }
