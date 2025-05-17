@@ -35,7 +35,8 @@ actor BoardSource {
 
   func initialize() async {
     try? await Task.sleep(nanoseconds: 5000000000)
-    //    continuation.yield(state)
+    continuation.yield(state)
+    print("yield")
   }
 
   func onTapGester(row: Int, col: Int) {

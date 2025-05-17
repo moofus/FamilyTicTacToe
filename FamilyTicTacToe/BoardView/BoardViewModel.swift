@@ -13,13 +13,11 @@ import SwiftUI
 class BoardViewModel {
   typealias BoardData = BoardSource.BoardData
 
-  @ObservationIgnored
   private let source: BoardSource
-  var data: [[BoardData]]
+  var data: [[BoardData]]?
 
   init() {
-    data = BoardSource.initialData
-    source = BoardSource()
+     source = BoardSource()
 
     Task {
       await processState()
