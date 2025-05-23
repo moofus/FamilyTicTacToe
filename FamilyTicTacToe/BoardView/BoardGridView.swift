@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BoardGridView: View {
   let model: BoardViewModel
-  let data: [[BoardViewModel.BoardData]]
+  let data: [[SquareData]]
 
   var body: some View {
     GeometryReader { geometry in
@@ -22,8 +22,8 @@ struct BoardGridView: View {
           Grid(horizontalSpacing: 12, verticalSpacing: 12) {
             GridRow {
               ForEach((0...2), id: \.self) { col in
-                let _ = print("Update row=0 col=\(col)")
-                MarkView(symbolColor: data[0][col].color, symbolName: data[0][col].symbolName)
+//                let _ = print("Update row=0 col=\(col)")
+                SquareView(symbolColor: data[0][col].symbolColor, symbolName: data[0][col].symbolName)
                   .onTapGesture {
                     model.onTapGester(row: 0, col: col)
                   }
@@ -34,8 +34,8 @@ struct BoardGridView: View {
 
             GridRow {
               ForEach((0...2), id: \.self) { col in
-                let _ = print("Update row=1 col=\(col)")
-                MarkView(symbolColor: data[1][col].color, symbolName: data[1][col].symbolName)
+ //               let _ = print("Update row=1 col=\(col)")
+                SquareView(symbolColor: data[1][col].symbolColor, symbolName: data[1][col].symbolName)
                   .onTapGesture {
                     model.onTapGester(row: 1, col: col)
                   }
@@ -46,8 +46,8 @@ struct BoardGridView: View {
 
             GridRow {
               ForEach((0...2), id: \.self) { col in
-                let _ = print("Update row=2 col=\(col)")
-                MarkView(symbolColor: data[2][col].color, symbolName: data[2][col].symbolName)
+//                let _ = print("Update row=2 col=\(col)")
+                SquareView(symbolColor: data[2][col].symbolColor, symbolName: data[2][col].symbolName)
                   .onTapGesture {
                     model.onTapGester(row: 2, col: col)
                   }
@@ -72,6 +72,6 @@ struct BoardGridView: View {
   }
 }
 
-#Preview {
-  BoardGridView(model: BoardViewModel(), data: BoardSource.initialData)
-}
+//#Preview {
+//  BoardGridView(model: BoardViewModel(), data: BoardSource.initialData)
+//}

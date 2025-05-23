@@ -11,13 +11,15 @@ import SwiftUI
 @Observable
 @MainActor
 class BoardViewModel {
-  typealias BoardData = BoardSource.BoardData
+  typealias State = BoardSource.State
 
   private let source: BoardSource
-  var data: [[BoardData]]?
+  var state: State
+
 
   init() {
-     source = BoardSource()
+    source = BoardSource()
+    state = .starting
 
     Task {
       await processState()
@@ -34,19 +36,15 @@ class BoardViewModel {
       await source.onTapGester(row: row, col: col)
     }
   }
-  
+
   private func processState() async {
     for await state in source.stream {
-      print("state=\(state)")
+      self.state = state
       switch state {
+      case .starting:
+        assertionFailure("This should never happen")
       case .idle(let data):
-        self.data = data
-      case .player1(let data):
-        self.data = data
-      case .player2(let data):
-        self.data = data
-      case .end(let data):
-        self.data = data
+        self.state = .idle(data)
       }
     }
   }

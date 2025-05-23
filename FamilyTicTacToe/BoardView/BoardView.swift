@@ -15,14 +15,27 @@ let logger = Logger(
 
 struct BoardView: View {
   var model = BoardViewModel()
+
   var body: some View {
-    if let data = model.data {
-      BoardGridView(model: model, data: data)
-    } else {
-      ProgressView()
-        .task {
-          await model.initialize()
+    VStack {
+      switch model.state {
+      case .starting:
+        ProgressView()
+          .task {
+            await model.initialize()
+          }
+      case .idle(let data):
+        HStack {
+          Spacer()
+          Text("Player: 1")
+          Spacer()
+          Text("Player: 2")
+          Spacer()
         }
+        .padding([.leading, .trailing], 32)
+        
+        BoardGridView(model: model, data: data)
+      }
     }
   }
 }
